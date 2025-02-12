@@ -1,4 +1,4 @@
-Trial 1 (bottom left):
+Trial 1 (bottom right):
 dist_from_top = 22 cm
 dist_from_left = 43.5 cm
 

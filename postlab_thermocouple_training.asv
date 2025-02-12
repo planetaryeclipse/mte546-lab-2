@@ -59,20 +59,13 @@ centerleft_pos_y = datum_y_from_rng(19.5);
 centercenter_pos_x = datum_x_from_rng(40.7);
 centercenter_pos_y = datum_y_from_rng(19.6);
 
-[centerright_t,centerright_ir_lsr,centerright_ir_lsl,centerright_ir_tsr,centerright_ir_tsl, ...
-    centerright_tc_tr,centerright_tc_br,centerright_tc_bl,centerright_tc_tl] = load_data("training_data/train_cr_ss.mat");
-centerright_pos_x = datum_x_from_rng(43.7);
-centerright_pos_y = datum_y_from_rng(19);
+[centerright_t,centerright_ir_lsr,centercen_ir_lsl,centercenter_ir_tsr,centercenter_ir_tsl, ...
+    centercenter_tc_tr,centercenter_tc_br,centercenter_tc_bl,centercenter_tc_tl] = load_data("training_data/train_cc_ss.mat");
+centercenter_pos_x = datum_x_from_rng(40.7);
+centercenter_pos_y = datum_y_from_rng(19.6);
 
-[topleft_t,topleft_ir_lsr,topleft_ir_lsl,topleft_ir_tsr,topleft_ir_tsl, ...
-    topleft_tc_tr,topleft_tc_br,topleft_tc_bl,topleft_tc_tl] = load_data("training_data/train_tl_ss.mat");
-topleft_pos_x = datum_x_from_rng(37.2);
-topleft_pos_y = datum_y_from_rng(16.7);
 
-[topcenter_t,topcenter_ir_lsr,topcenter_ir_lsl,topcenter_ir_tsr,topcenter_ir_tsl, ...
-    topcenter_tc_tr,topcenter_tc_br,topcenter_tc_bl,topcenter_tc_tl] = load_data("training_data/train_tc_ss.mat");
-topcenter_pos_x = datum_x_from_rng(40.3);
-topcenter_pos_y = datum_y_from_rng(16.3);
+
 
 [topright_t,topright_ir_lsr,topright_ir_lsl,topright_ir_tsr,topright_ir_tsl, ...
     topright_tc_tr,topright_tc_br,topright_tc_bl,topright_tc_tl] = load_data("training_data/train_tr_ss.mat");
