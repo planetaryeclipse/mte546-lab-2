@@ -1,0 +1,60 @@
+Trial 1 (bottom left):
+dist_from_top = 22 cm
+dist_from_left = 43.5 cm
+
+Trial 2 (bottom center):
+dist_from_top = 22.4 cm
+dist_from_left = 40 cm
+
+Trial 3 (bottom left):
+dist_from_top = 22.4
+dist_from_left = 37.7
+
+Trial 4 (center left):
+dist_from_top = 19.5
+dist_from_left = 37.5
+
+Trial 5 (top left):
+dist_from_top = 16.7
+dist_from_left = 37.2
+
+Trial 6 (top center):
+dist_from_top = 16.3
+dist_from_left = 40.3
+
+Trial 7 (top right):
+dist_from_top = 16.3
+dist_from_left = 43.5
+
+Trial 8 (center right):
+top = 19
+left = 43.7
+
+Trial 9 (center center):
+top = 19.6
+left = 40.7
+
+
+-- 
+
+Trial 1
+top = 18.2
+left = 42.8
+
+Trial 2
+top = 21.3
+left = 41.4
+
+Trial 3
+top = 19.7
+left = 36.6
+
+-- Test data again
+
+Trial 1 (bottom-left)
+top = 22.5
+left = 37.5
+
+Trial 2 (bottom-middle)
+top = 22.3
+left = 40.3
