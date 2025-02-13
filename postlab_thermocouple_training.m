@@ -107,12 +107,15 @@ topright_dist_from_tcs = vecnorm(tc_locs-topright_pos);
 % ----
 
 figure;
-plot(bottomright_t,bottomright_tc_tr);
+plot(topright_t,topright_tc_tr);
 hold on
 grid on
-plot(bottomright_t,bottomright_tc_tl);
-plot(bottomright_t,bottomright_tc_br);
-plot(bottomright_t,bottomright_tc_bl);
+plot(topright_t,topright_tc_tl);
+plot(topright_t,topright_tc_br);
+plot(topright_t,topright_tc_bl);
+xlabel('Time (s)')
+ylabel('Temperature (°C)')
+legend("Top-Right TC", "Top-Left TC", "Bottom-Left TC", "Bottom-Right TC")
 
 %% generate the temp vs distance set for each thermocouple
 
@@ -239,6 +242,130 @@ thermocouple_bl_temp_to_dist_var = inv_var(thermocouple_bl_linear,thermocouple_b
 
 thermocouple_br_temp_to_dist_linear = inv_linear(thermocouple_br_linear);
 thermocouple_br_temp_to_dist_var = inv_var(thermocouple_br_linear,thermocouple_br_var);
+
+% assemble thermocouple estimate properties matrix to be used below
+thermocouple_props = struct;
+thermocouple_props.tl_pos = tc_topleft;
+thermocouple_props.tr_pos = tc_topright;
+thermocouple_props.br_pos = tc_bottomright;
+thermocouple_props.bl_pos = tc_bottomleft;
+thermocouple_props.tl_linear = thermocouple_tl_temp_to_dist_linear;
+thermocouple_props.tr_linear = thermocouple_tr_temp_to_dist_linear;
+thermocouple_props.br_linear = thermocouple_br_temp_to_dist_linear;
+thermocouple_props.bl_linear = thermocouple_bl_temp_to_dist_linear;
+thermocouple_props.tl_linear_var = thermocouple_tl_temp_to_dist_var;
+thermocouple_props.tr_linear_var = thermocouple_tr_temp_to_dist_var;
+thermocouple_props.br_linear_var = thermocouple_br_temp_to_dist_var;
+thermocouple_props.bl_linear_var = thermocouple_bl_temp_to_dist_var;
+
+%% estimate the position of the validation data
+
+% [bottommiddle_t,bottommiddle_ir_lsr,bottommiddle_ir_lsl,bottommiddle_ir_tsr,bottommiddle_ir_tsl, ...
+%     bottommiddle_tc_tr,bottommiddle_tc_br,bottommiddle_tc_bl,bottommiddle_tc_tl] = load_data("training_data/train_bm_2_ss.mat");
+% bottommiddle_pos = [datum_x_from_rng(40.3) datum_y_from_rng(22.3)]';
+% bottommiddle_dist_from_tcs = vecnorm(tc_locs-bottommiddle_pos);
+
+x = linspace(0,10.8,40);
+y = linspace(0,10.8,40);
+[XX,YY] = meshgrid(x,y);
+X = [XX(:) YY(:)];
+
+actual_loc_z = 1;
+actual_loc_size = 2;
+
+% validation 1
+
+[valid1_t,valid1_ir_lsr,valid1_ir_lsl,valid1_ir_tsr,valid1_ir_tsl, ...
+    valid1_tc_tr,valid1_tc_br,valid1_tc_bl,valid1_tc_tl] = load_data("validation_data/test_random1_ss.mat");
+valid1_pos = [datum_x_from_rng(42.8) datum_y_from_rng(18.2)]';
+
+valid1_tc_tl_ss = compute_stats_last_in_last_percent(valid1_tc_tl,last_percent);
+valid1_tc_tl_ss = valid1_tc_tl_ss(1);
+valid1_tc_tr_ss = compute_stats_last_in_last_percent(valid1_tc_tr,last_percent);
+valid1_tc_tr_ss = valid1_tc_tr_ss(1);
+valid1_tc_br_ss = compute_stats_last_in_last_percent(valid1_tc_br,last_percent);
+valid1_tc_br_ss = valid1_tc_br_ss(1);
+valid1_tc_bl_ss = compute_stats_last_in_last_percent(valid1_tc_bl,last_percent);
+valid1_tc_bl_ss = valid1_tc_bl_ss(1);
+
+[est_valid1_mu,est_valid1_sigma] = thermocouple_estimate(thermocouple_props,valid1_tc_tl_ss,valid1_tc_tr_ss,valid1_tc_br_ss,valid1_tc_bl_ss);
+
+z1 = mvnpdf(X,est_valid1_mu',est_valid1_sigma);
+z1 = reshape(z1,length(x),length(y));
+
+figure
+surf(x,y,z1)
+hold on
+plot3([valid1_pos(1) valid1_pos(1)], [valid1_pos(2) valid1_pos(2)], [0, 1], 'r', 'LineWidth',2)
+% scatter3(valid1_pos(1),valid1_pos(2),actual_loc_z,"LineWidth",10);
+title("Validation 1")
+xlabel('$x$', 'Interpreter', 'latex')
+ylabel('$y$', 'Interpreter', 'latex')
+zlabel('$P(\mathbf{\mu}|\mathbf{x})$', 'Interpreter', "latex")
+legend('Likelihood', 'Actual Location', 'Location', 'best')
+
+% validation 2
+
+[valid2_t,valid2_ir_lsr,valid2_ir_lsl,valid2_ir_tsr,valid2_ir_tsl, ...
+    valid2_tc_tr,valid2_tc_br,valid2_tc_bl,valid2_tc_tl] = load_data("validation_data/test_random2_ss.mat");
+valid2_pos = [datum_x_from_rng(41.4) datum_y_from_rng(21.3)]';
+
+valid2_tc_tl_ss = compute_stats_last_in_last_percent(valid2_tc_tl,last_percent);
+valid2_tc_tl_ss = valid2_tc_tl_ss(1);
+valid2_tc_tr_ss = compute_stats_last_in_last_percent(valid2_tc_tr,last_percent);
+valid2_tc_tr_ss = valid2_tc_tr_ss(1);
+valid2_tc_br_ss = compute_stats_last_in_last_percent(valid2_tc_br,last_percent);
+valid2_tc_br_ss = valid2_tc_br_ss(1);
+valid2_tc_bl_ss = compute_stats_last_in_last_percent(valid2_tc_bl,last_percent);
+valid2_tc_bl_ss = valid2_tc_bl_ss(1);
+
+[est_valid2_mu,est_valid2_sigma] = thermocouple_estimate(thermocouple_props,valid2_tc_tl_ss,valid2_tc_tr_ss,valid2_tc_br_ss,valid2_tc_bl_ss);
+
+z2 = mvnpdf(X,est_valid2_mu',est_valid2_sigma);
+z2 = reshape(z2,length(x),length(y));
+
+figure
+surf(x,y,z2)
+hold on
+plot3([valid2_pos(1) valid2_pos(1)], [valid2_pos(2) valid2_pos(2)], [0, 1], 'r', 'LineWidth',2)
+% scatter3(valid1_pos(1),valid1_pos(2),actual_loc_z,"LineWidth",10);
+title("Validation 2")
+xlabel('$x$', 'Interpreter', 'latex')
+ylabel('$y$', 'Interpreter', 'latex')
+zlabel('$P(\mathbf{\mu}|\mathbf{x})$', 'Interpreter', "latex")
+legend('Likelihood', 'Actual Location', 'Location', 'best')
+
+% validation 3
+
+[valid3_t,valid3_ir_lsr,valid3_ir_lsl,valid3_ir_tsr,valid3_ir_tsl, ...
+    valid3_tc_tr,valid3_tc_br,valid3_tc_bl,valid3_tc_tl] = load_data("validation_data/test_random3_ss.mat");
+valid3_pos = [datum_x_from_rng(36.6) datum_y_from_rng(19.7)]';
+
+valid3_tc_tl_ss = compute_stats_last_in_last_percent(valid3_tc_tl,last_percent);
+valid3_tc_tl_ss = valid3_tc_tl_ss(1);
+valid3_tc_tr_ss = compute_stats_last_in_last_percent(valid3_tc_tr,last_percent);
+valid3_tc_tr_ss = valid3_tc_tr_ss(1);
+valid3_tc_br_ss = compute_stats_last_in_last_percent(valid3_tc_br,last_percent);
+valid3_tc_br_ss = valid3_tc_br_ss(1);
+valid3_tc_bl_ss = compute_stats_last_in_last_percent(valid3_tc_bl,last_percent);
+valid3_tc_bl_ss = valid3_tc_bl_ss(1);
+
+[est_valid3_mu,est_valid3_sigma] = thermocouple_estimate(thermocouple_props,valid3_tc_tl_ss,valid3_tc_tr_ss,valid3_tc_br_ss,valid3_tc_bl_ss);
+
+z3 = mvnpdf(X,est_valid3_mu',est_valid3_sigma);
+z3 = reshape(z3,length(x),length(y));
+
+figure
+surf(x,y,z3)
+hold on
+plot3([valid3_pos(1) valid3_pos(1)], [valid3_pos(2) valid3_pos(2)], [0, 1], 'r', 'LineWidth',2)
+% scatter3(valid1_pos(1),valid1_pos(2),actual_loc_z,"LineWidth",10);
+title("Validation 3")
+xlabel('$x$', 'Interpreter', 'latex')
+ylabel('$y$', 'Interpreter', 'latex')
+zlabel('$P(\mathbf{\mu}|\mathbf{x})$', 'Interpreter', "latex")
+legend('Likelihood', 'Actual Location', 'Location', 'best')
+
 
 %% helper functions
 function [last_stats] = compute_stats_last_in_last_percent(data,percent)
