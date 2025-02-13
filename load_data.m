@@ -8,10 +8,10 @@ load(file,'data','sample_rate','time');
 t = time;
 
 % does a conversion from millimeters to centimeters for convenience
-ir_leftside_right = ir_long_v_to_dist(data(:,3)) / 10;
-ir_leftside_left = ir_long_v_to_dist(data(:,4)) / 10;
-ir_topside_right = ir_med_v_to_dist(data(:,1)) / 10;
-ir_topside_left = ir_short_v_to_dist(data(:,2)) / 10;
+ir_leftside_right = ir_long_v_to_dist(data(:,3))/10;
+ir_leftside_left = ir_long_v_to_dist(data(:,4))/10;
+ir_topside_right = ir_med_v_to_dist(data(:,1))/10;
+ir_topside_left = ir_short_v_to_dist(data(:,2))/10;
 
 % outputs degrees
 thermo_tr = thermocouple_v_to_temp(data(:,5));

@@ -148,7 +148,7 @@ hold on
 plot(plot_dists,polyval(flip(thermocouple_tr_linear),plot_dists))
 xlabel("Distance (cm)")
 ylabel("Temperature (°C)")
-title("TR Thermocouple")
+title("Top-Right")
 
 thermocouple_br_tdset = [
     bottomleft_dist_from_tcs(2) compute_stats_last_in_last_percent(bottomleft_tc_br,last_percent) ;
@@ -173,7 +173,7 @@ hold on
 plot(plot_dists,polyval(flip(thermocouple_br_linear),plot_dists))
 xlabel("Distance (cm)")
 ylabel("Temperature (°C)")
-title("BR Thermocouple")
+title("Bottom-Right")
 
 thermocouple_bl_tdset = [
     bottomleft_dist_from_tcs(3) compute_stats_last_in_last_percent(bottomleft_tc_bl,last_percent) ;
@@ -198,7 +198,7 @@ hold on
 plot(plot_dists,polyval(flip(thermocouple_bl_linear),plot_dists))
 xlabel("Distance (cm)")
 ylabel("Temperature (°C)")
-title("BL Thermocouple")
+title("Bottom-Left")
 
 thermocouple_tl_tdset = [
     bottomleft_dist_from_tcs(4) compute_stats_last_in_last_percent(bottomleft_tc_tl,last_percent) ;
@@ -223,7 +223,7 @@ hold on
 plot(plot_dists,polyval(flip(thermocouple_tl_linear),plot_dists))
 xlabel("Distance (cm)")
 ylabel("Temperature (°C)")
-title("TL Thermocouple")
+title("Top-Left")
 
 %% invert the thermocouple fits
 % gets distance of the thermocouple as a function of the temperature
