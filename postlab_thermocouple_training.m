@@ -243,7 +243,7 @@ thermocouple_bl_temp_to_dist_var = inv_var(thermocouple_bl_linear,thermocouple_b
 thermocouple_br_temp_to_dist_linear = inv_linear(thermocouple_br_linear);
 thermocouple_br_temp_to_dist_var = inv_var(thermocouple_br_linear,thermocouple_br_var);
 
-% assemble thermocouple estimate properties matrix to be used below
+% assemble thermocouple estimate properties to be used below
 thermocouple_props = struct;
 thermocouple_props.tl_pos = tc_topleft;
 thermocouple_props.tr_pos = tc_topright;
@@ -288,9 +288,9 @@ valid1_tc_br_ss = valid1_tc_br_ss(1);
 valid1_tc_bl_ss = compute_stats_last_in_last_percent(valid1_tc_bl,last_percent);
 valid1_tc_bl_ss = valid1_tc_bl_ss(1);
 
-[est_valid1_mu,est_valid1_sigma] = thermocouple_estimate(thermocouple_props,valid1_tc_tl_ss,valid1_tc_tr_ss,valid1_tc_br_ss,valid1_tc_bl_ss);
+[tc_est_valid1_mu,tc_est_valid1_sigma] = thermocouple_estimate(thermocouple_props,valid1_tc_tl_ss,valid1_tc_tr_ss,valid1_tc_br_ss,valid1_tc_bl_ss);
 
-z1 = mvnpdf(X,est_valid1_mu',est_valid1_sigma);
+z1 = mvnpdf(X,tc_est_valid1_mu',tc_est_valid1_sigma);
 z1 = reshape(z1,length(x),length(y));
 
 figure
@@ -319,9 +319,9 @@ valid2_tc_br_ss = valid2_tc_br_ss(1);
 valid2_tc_bl_ss = compute_stats_last_in_last_percent(valid2_tc_bl,last_percent);
 valid2_tc_bl_ss = valid2_tc_bl_ss(1);
 
-[est_valid2_mu,est_valid2_sigma] = thermocouple_estimate(thermocouple_props,valid2_tc_tl_ss,valid2_tc_tr_ss,valid2_tc_br_ss,valid2_tc_bl_ss);
+[tc_est_valid2_mu,tc_est_valid2_sigma] = thermocouple_estimate(thermocouple_props,valid2_tc_tl_ss,valid2_tc_tr_ss,valid2_tc_br_ss,valid2_tc_bl_ss);
 
-z2 = mvnpdf(X,est_valid2_mu',est_valid2_sigma);
+z2 = mvnpdf(X,tc_est_valid2_mu',tc_est_valid2_sigma);
 z2 = reshape(z2,length(x),length(y));
 
 figure
@@ -350,9 +350,9 @@ valid3_tc_br_ss = valid3_tc_br_ss(1);
 valid3_tc_bl_ss = compute_stats_last_in_last_percent(valid3_tc_bl,last_percent);
 valid3_tc_bl_ss = valid3_tc_bl_ss(1);
 
-[est_valid3_mu,est_valid3_sigma] = thermocouple_estimate(thermocouple_props,valid3_tc_tl_ss,valid3_tc_tr_ss,valid3_tc_br_ss,valid3_tc_bl_ss);
+[tc_est_valid3_mu,tc_est_valid3_sigma] = thermocouple_estimate(thermocouple_props,valid3_tc_tl_ss,valid3_tc_tr_ss,valid3_tc_br_ss,valid3_tc_bl_ss);
 
-z3 = mvnpdf(X,est_valid3_mu',est_valid3_sigma);
+z3 = mvnpdf(X,tc_est_valid3_mu',tc_est_valid3_sigma);
 z3 = reshape(z3,length(x),length(y));
 
 figure
@@ -366,6 +366,11 @@ ylabel('$y$', 'Interpreter', 'latex')
 zlabel('$P(\mathbf{\mu}|\mathbf{x})$', 'Interpreter', "latex")
 legend('Likelihood', 'Actual Location', 'Location', 'best')
 
+%% save the estimated validation distributions separately
+
+save("tc_est_data","tc_est_valid1_mu","tc_est_valid1_sigma",...
+    "tc_est_valid2_mu","tc_est_valid2_sigma","tc_est_valid3_mu","tc_est_valid3_sigma",...
+    "valid1_pos","valid2_pos","valid3_pos")
 
 %% helper functions
 function [last_stats] = compute_stats_last_in_last_percent(data,percent)
