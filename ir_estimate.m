@@ -41,7 +41,7 @@ if abs(left_bottom_datum_dist - plate_datum_center) < abs(left_top_datum_dist - 
     x_pos_var = left_bottom_datum_dist_var;
 else
     x_pos = left_top_datum_dist;
-    x_pos_var = left_bottom_datum_dist_var;
+    x_pos_var = left_top_datum_dist_var;
 end
 
 % assume independent sampling on the x and y positions
