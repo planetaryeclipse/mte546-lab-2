@@ -20,11 +20,29 @@ function [mu, sigma] = ir_estimate(props,top_left_volt,top_right_volt,left_botto
 [left_top_datum_dist,left_top_datum_dist_var] = remap_dist(left_top_rng,left_top_rng_var,props.left_top_calibrate_linear);
 
 % fuse the left distance
-x_pos = (left_bottom_datum_dist*left_top_datum_dist_var + left_top_datum_dist*left_bottom_datum_dist_var)/(left_bottom_datum_dist_var+left_top_datum_dist_var);
-x_pos_var = (left_bottom_datum_dist_var*left_top_datum_dist_var)/(left_bottom_datum_dist_var+left_top_datum_dist_var);
+% x_pos = (left_bottom_datum_dist*left_top_datum_dist_var + left_top_datum_dist*left_bottom_datum_dist_var)/(left_bottom_datum_dist_var+left_top_datum_dist_var);
+% x_pos_var = (left_bottom_datum_dist_var*left_top_datum_dist_var)/(left_bottom_datum_dist_var+left_top_datum_dist_var);
+% 
+% y_pos = (top_left_datum_dist*top_right_datum_dist_var + top_right_datum_dist*top_left_datum_dist_var)/(top_left_datum_dist_var+top_right_datum_dist_var);
+% y_pos_var = (top_left_datum_dist_var*top_right_datum_dist_var)/(top_left_datum_dist_var+top_right_datum_dist_var);
 
-y_pos = (top_left_datum_dist*top_right_datum_dist_var + top_right_datum_dist*top_left_datum_dist_var)/(top_left_datum_dist_var+top_right_datum_dist_var);
-y_pos_var = (top_left_datum_dist_var*top_right_datum_dist_var)/(top_left_datum_dist_var+top_right_datum_dist_var);
+% conditionally choose which data to keep based on distance from the center
+% of the plate
+plate_datum_center = 10.8/2;
+if abs(top_left_datum_dist - plate_datum_center) < abs(top_right_datum_dist - plate_datum_center)
+    y_pos = top_left_datum_dist;
+    y_pos_var = top_left_datum_dist_var;
+else
+    y_pos = top_right_datum_dist;
+    y_pos_var = top_right_datum_dist_var;
+end
+if abs(left_bottom_datum_dist - plate_datum_center) < abs(left_top_datum_dist - plate_datum_center)
+    x_pos = left_bottom_datum_dist;
+    x_pos_var = left_bottom_datum_dist_var;
+else
+    x_pos = left_top_datum_dist;
+    x_pos_var = left_bottom_datum_dist_var;
+end
 
 % assume independent sampling on the x and y positions
 mu = [x_pos y_pos]';

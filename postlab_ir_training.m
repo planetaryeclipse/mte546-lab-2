@@ -65,10 +65,10 @@ short_volt_noise_var = noise_var;
 
 % ----
 
-[bottomleft_t,bottomleft_ir_lsr,bottomleft_ir_lsl,bottomleft_ir_tsr,bottomleft_ir_tsl, ...
-    bottomleft_tc_tr,bottomleft_tc_br,bottomleft_tc_bl,bottomleft_tc_tl] = load_data("training_data/train_bl_2_ss.mat");
-bottomleft_pos = [datum_x_from_rng(37.5) datum_y_from_rng(22.5)]';
-bottomleft_dist_from_tcs = vecnorm(tc_locs-bottomleft_pos);
+% [bottomleft_t,bottomleft_ir_lsr,bottomleft_ir_lsl,bottomleft_ir_tsr,bottomleft_ir_tsl, ...
+%     bottomleft_tc_tr,bottomleft_tc_br,bottomleft_tc_bl,bottomleft_tc_tl] = load_data("training_data/train_bl_2_ss.mat");
+% bottomleft_pos = [datum_x_from_rng(37.5) datum_y_from_rng(22.5)]';
+% bottomleft_dist_from_tcs = vecnorm(tc_locs-bottomleft_pos);
 
 % ----
 
@@ -111,10 +111,10 @@ centerright_dist_from_tcs = vecnorm(tc_locs-centerright_pos);
 
 % ----
 
-[topleft_t,topleft_ir_lsr,topleft_ir_lsl,topleft_ir_tsr,topleft_ir_tsl, ...
-    topleft_tc_tr,topleft_tc_br,topleft_tc_bl,topleft_tc_tl] = load_data("training_data/train_tl_ss.mat");
-topleft_pos = [datum_x_from_rng(37.2) datum_y_from_rng(16.7)]';
-topleft_dist_from_tcs = vecnorm(tc_locs-topleft_pos);
+% [topleft_t,topleft_ir_lsr,topleft_ir_lsl,topleft_ir_tsr,topleft_ir_tsl, ...
+%     topleft_tc_tr,topleft_tc_br,topleft_tc_bl,topleft_tc_tl] = load_data("training_data/train_tl_ss.mat");
+% topleft_pos = [datum_x_from_rng(37.2) datum_y_from_rng(16.7)]';
+% topleft_dist_from_tcs = vecnorm(tc_locs-topleft_pos);
 
 % ----
 
@@ -125,19 +125,19 @@ topcenter_dist_from_tcs = vecnorm(tc_locs-topcenter_pos);
 
 % ----
 
-[topright_t,topright_ir_lsr,topright_ir_lsl,topright_ir_tsr,topright_ir_tsl, ...
-    topright_tc_tr,topright_tc_br,topright_tc_bl,topright_tc_tl] = load_data("training_data/train_tr_ss.mat");
-topright_pos = [datum_x_from_rng(43.5) datum_y_from_rng(16.3)]';
-topright_dist_from_tcs = vecnorm(tc_locs-topright_pos);
+% [topright_t,topright_ir_lsr,topright_ir_lsl,topright_ir_tsr,topright_ir_tsl, ...
+%     topright_tc_tr,topright_tc_br,topright_tc_bl,topright_tc_tl] = load_data("training_data/train_tr_ss.mat");
+% topright_pos = [datum_x_from_rng(43.5) datum_y_from_rng(16.3)]';
+% topright_dist_from_tcs = vecnorm(tc_locs-topright_pos);
 
 % ----
 
-figure;
-plot(topright_ir_tsr);
-hold on
-grid on
-plot(centerright_ir_tsr);
-plot(bottomright_ir_tsr);
+% figure;
+% plot(topright_ir_tsr);
+% hold on
+% grid on
+% plot(centerright_ir_tsr);
+% plot(bottomright_ir_tsr);
 
 % figure;
 % plot(topright_ir_tsr/10)
@@ -159,52 +159,58 @@ plot(bottomright_ir_tsr);
 
 %% calibration to match IR with expected plate positions
 ir_top_right_calibration_means = [
-    mean(topright_ir_tsr) 
+    % mean(topright_ir_tsr) 
     mean(centerright_ir_tsr) 
-    mean(bottomright_ir_tsr)];
+    % mean(bottomright_ir_tsr)
+];
 ir_top_right_expected = [
-    topright_pos(2)
+    % topright_pos(2)
     centerright_pos(2)
-    bottomright_pos(2)];
+    % bottomright_pos(2)
+];
 
 ir_top_left_calibration_means = [
-    mean(topleft_ir_tsl)
+    % mean(topleft_ir_tsl)
     mean(centerleft_ir_tsl)
-    mean(bottomleft_ir_tsl)
+    % mean(bottomleft_ir_tsl)
     ];
 ir_top_left_expected = [
-    topleft_pos(2)
+    % topleft_pos(2)
     centerleft_pos(2)
-    bottomleft_pos(2)
+    % bottomleft_pos(2)
     ];
 
 ir_left_bottom_calibration_means = [
-    mean(bottomleft_ir_lsl)
+    % mean(bottomleft_ir_lsl)
     mean(bottommiddle_ir_lsl)
-    mean(bottomright_ir_lsl)
+    % mean(bottomright_ir_lsl)
     ];
 ir_left_bottom_expected = [
-    bottomleft_pos(1)
+    % bottomleft_pos(1)
     bottommiddle_pos(1)
-    bottomright_pos(1)
+    % bottomright_pos(1)
     ];
 
 ir_left_top_calibration_means = [
-    mean(topleft_ir_lsr)
+    % mean(topleft_ir_lsr)
     mean(topcenter_ir_lsr)
-    mean(topright_ir_lsr)
+    % mean(topright_ir_lsr)
     ];
 ir_left_top_expected = [
-    topleft_pos(1)
+    % topleft_pos(1)
     topcenter_pos(1)
-    topright_pos(1)
+    % topright_pos(1)
     ];
 
 % computes the calibration fits to map the ranges to the datum
-ir_top_right_calibrate_fit = polyfit(ir_top_right_calibration_means,ir_top_right_expected,1);
-ir_top_left_calibrate_fit = polyfit(ir_top_left_calibration_means,ir_top_left_expected,1);
-ir_left_bottom_calibrate_fit = polyfit(ir_left_bottom_calibration_means,ir_left_bottom_expected,1);
-ir_left_top_calibrate_fit = polyfit(ir_left_top_calibration_means,ir_left_top_expected,1);
+% ir_top_right_calibrate_fit = polyfit(ir_top_right_calibration_means,ir_top_right_expected,1);
+% ir_top_left_calibrate_fit = polyfit(ir_top_left_calibration_means,ir_top_left_expected,1);
+% ir_left_bottom_calibrate_fit = polyfit(ir_left_bottom_calibration_means,ir_left_bottom_expected,1);
+% ir_left_top_calibrate_fit = polyfit(ir_left_top_calibration_means,ir_left_top_expected,1);
+ir_top_right_calibrate_fit = [-1 (centerright_pos(2)+mean(centerright_ir_tsr))];
+ir_top_left_calibrate_fit = [-1 (centerleft_pos(2)+mean(centerleft_ir_tsl))];
+ir_left_bottom_calibrate_fit = [1 (bottommiddle_pos(1)-mean(bottommiddle_ir_lsl))];
+ir_left_top_calibrate_fit = [1 (topcenter_pos(1)-mean(topcenter_ir_lsr))];
 
 % plot these calibration curves
 tiledlayout(2,2)
@@ -213,7 +219,7 @@ nexttile
 scatter(ir_top_right_calibration_means,ir_top_right_expected)
 hold on
 grid on
-x = ir_top_right_calibration_means;
+x = linspace(0,20,100); %ir_top_right_calibration_means;
 plot(x, polyval(ir_top_right_calibrate_fit,x))
 xlabel('Sample Mean of Ranges (cm)')
 ylabel('Datum Location (cm)')
@@ -223,7 +229,7 @@ nexttile
 scatter(ir_top_left_calibration_means,ir_top_left_expected)
 hold on
 grid on
-x = ir_top_left_calibration_means;
+% x = ir_top_left_calibration_means;
 plot(x, polyval(ir_top_left_calibrate_fit,x))
 xlabel('Sample Mean of Ranges (cm)')
 ylabel('Datum Location (cm)')
@@ -233,7 +239,8 @@ nexttile
 scatter(ir_left_bottom_calibration_means,ir_left_bottom_expected)
 hold on
 grid on
-x = ir_left_bottom_calibration_means;
+x = linspace(0,40,100);
+% x = ir_left_bottom_calibration_means;
 plot(x, polyval(ir_left_bottom_calibrate_fit,x))
 xlabel('Sample Mean of Ranges (cm)')
 ylabel('Datum Location (cm)')
@@ -243,7 +250,7 @@ nexttile
 scatter(ir_left_top_calibration_means,ir_left_top_expected)
 hold on
 grid on
-x = ir_left_top_calibration_means;
+% x = ir_left_top_calibration_means;
 plot(x, polyval(ir_left_top_calibrate_fit,x))
 xlabel('Sample Mean of Ranges (cm)')
 ylabel('Datum Location (cm)')
@@ -290,8 +297,8 @@ actual_loc_size = 2;
 [valid1_t,valid1_ir_lsr,valid1_ir_lsl,valid1_ir_tsr,valid1_ir_tsl, ...
     valid1_tc_tr,valid1_tc_br,valid1_tc_bl,valid1_tc_tl, ...
     valid1_ir_left_top_volt,valid1_ir_left_bottom_volt, ...
-    valid1_ir_top_left_volt,valid1_ir_top_right_volt] = load_data("validation_data/test_random1_ss.mat");
-valid1_pos = [datum_x_from_rng(42.8) datum_y_from_rng(18.2)]';
+    valid1_ir_top_left_volt,valid1_ir_top_right_volt] = load_data("training_data/train_tr_ss.mat");
+valid1_pos = [datum_x_from_rng(43.5) datum_y_from_rng(16.3)]';
 
 [ir_est_valid1_mu,ir_est_valid1_sigma] = ir_estimate(ir_props, ...
     mean(valid1_ir_top_left_volt),mean(valid1_ir_top_right_volt),mean(valid1_ir_left_bottom_volt),mean(valid1_ir_left_top_volt));
@@ -317,8 +324,8 @@ legend('Likelihood', 'Actual Location', 'Location', 'best')
 [valid2_t,valid2_ir_lsr,valid2_ir_lsl,valid2_ir_tsr,valid2_ir_tsl, ...
     valid2_tc_tr,valid2_tc_br,valid2_tc_bl,valid2_tc_tl, ...
     valid2_ir_left_top_volt,valid2_ir_left_bottom_volt, ...
-    valid2_ir_top_left_volt,valid2_ir_top_right_volt] = load_data("validation_data/test_random2_ss.mat");
-valid2_pos = [datum_x_from_rng(41.4) datum_y_from_rng(21.3)]';
+    valid2_ir_top_left_volt,valid2_ir_top_right_volt] = load_data("training_data/train_tl_ss.mat");
+valid2_pos = [datum_x_from_rng(37.2) datum_y_from_rng(16.7)]';
 
 [ir_est_valid2_mu,ir_est_valid2_sigma] = ir_estimate(ir_props, ...
     mean(valid2_ir_top_left_volt),mean(valid2_ir_top_right_volt),mean(valid2_ir_left_bottom_volt),mean(valid2_ir_left_top_volt));
@@ -344,8 +351,8 @@ legend('Likelihood', 'Actual Location', 'Location', 'best')
 [valid3_t,valid3_ir_lsr,valid3_ir_lsl,valid3_ir_tsr,valid3_ir_tsl, ...
     valid3_tc_tr,valid3_tc_br,valid3_tc_bl,valid3_tc_tl, ...
     valid3_ir_left_top_volt,valid3_ir_left_bottom_volt, ...
-    valid3_ir_top_left_volt,valid3_ir_top_right_volt] = load_data("validation_data/test_random3_ss.mat");
-valid3_pos = [datum_x_from_rng(36.6) datum_y_from_rng(19.7)]';
+    valid3_ir_top_left_volt,valid3_ir_top_right_volt] = load_data("training_data/train_bl_2_ss.mat");
+valid3_pos = [datum_x_from_rng(37.5) datum_y_from_rng(22.5)]';
 
 [ir_est_valid3_mu,ir_est_valid3_sigma] = ir_estimate(ir_props, ...
     mean(valid3_ir_top_left_volt),mean(valid3_ir_top_right_volt),mean(valid3_ir_left_bottom_volt),mean(valid3_ir_left_top_volt));

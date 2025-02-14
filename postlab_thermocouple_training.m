@@ -39,10 +39,10 @@ datum_y_from_rng = @(y) plate_datum_offset_y - y - orange_block_half_width;
 
 % ----
 
-[bottomleft_t,bottomleft_ir_lsr,bottomleft_ir_lsl,bottomleft_ir_tsr,bottomleft_ir_tsl, ...
-    bottomleft_tc_tr,bottomleft_tc_br,bottomleft_tc_bl,bottomleft_tc_tl] = load_data("training_data/train_bl_2_ss.mat");
-bottomleft_pos = [datum_x_from_rng(37.5) datum_y_from_rng(22.5)]';
-bottomleft_dist_from_tcs = vecnorm(tc_locs-bottomleft_pos);
+% [bottomleft_t,bottomleft_ir_lsr,bottomleft_ir_lsl,bottomleft_ir_tsr,bottomleft_ir_tsl, ...
+%     bottomleft_tc_tr,bottomleft_tc_br,bottomleft_tc_bl,bottomleft_tc_tl] = load_data("training_data/train_bl_2_ss.mat");
+% bottomleft_pos = [datum_x_from_rng(37.5) datum_y_from_rng(22.5)]';
+% bottomleft_dist_from_tcs = vecnorm(tc_locs-bottomleft_pos);
 
 % ----
 
@@ -85,10 +85,10 @@ centerright_dist_from_tcs = vecnorm(tc_locs-centerright_pos);
 
 % ----
 
-[topleft_t,topleft_ir_lsr,topleft_ir_lsl,topleft_ir_tsr,topleft_ir_tsl, ...
-    topleft_tc_tr,topleft_tc_br,topleft_tc_bl,topleft_tc_tl] = load_data("training_data/train_tl_ss.mat");
-topleft_pos = [datum_x_from_rng(37.2) datum_y_from_rng(16.7)]';
-topleft_dist_from_tcs = vecnorm(tc_locs-topleft_pos);
+% [topleft_t,topleft_ir_lsr,topleft_ir_lsl,topleft_ir_tsr,topleft_ir_tsl, ...
+%     topleft_tc_tr,topleft_tc_br,topleft_tc_bl,topleft_tc_tl] = load_data("training_data/train_tl_ss.mat");
+% topleft_pos = [datum_x_from_rng(37.2) datum_y_from_rng(16.7)]';
+% topleft_dist_from_tcs = vecnorm(tc_locs-topleft_pos);
 
 % ----
 
@@ -99,23 +99,23 @@ topcenter_dist_from_tcs = vecnorm(tc_locs-topcenter_pos);
 
 % ----
 
-[topright_t,topright_ir_lsr,topright_ir_lsl,topright_ir_tsr,topright_ir_tsl, ...
-    topright_tc_tr,topright_tc_br,topright_tc_bl,topright_tc_tl] = load_data("training_data/train_tr_ss.mat");
-topright_pos = [datum_x_from_rng(43.5) datum_y_from_rng(16.3)]';
-topright_dist_from_tcs = vecnorm(tc_locs-topright_pos);
+% [topright_t,topright_ir_lsr,topright_ir_lsl,topright_ir_tsr,topright_ir_tsl, ...
+%     topright_tc_tr,topright_tc_br,topright_tc_bl,topright_tc_tl] = load_data("training_data/train_tr_ss.mat");
+% topright_pos = [datum_x_from_rng(43.5) datum_y_from_rng(16.3)]';
+% topright_dist_from_tcs = vecnorm(tc_locs-topright_pos);
 
 % ----
 
-figure;
-plot(topright_t,topright_tc_tr);
-hold on
-grid on
-plot(topright_t,topright_tc_tl);
-plot(topright_t,topright_tc_br);
-plot(topright_t,topright_tc_bl);
-xlabel('Time (s)')
-ylabel('Temperature (°C)')
-legend("Top-Right TC", "Top-Left TC", "Bottom-Left TC", "Bottom-Right TC")
+% figure;
+% plot(topleft_t,topleft_tc_tr);
+% hold on
+% grid on
+% plot(topleft_t,topleft_tc_tl);
+% plot(topleft_t,topleft_tc_br);
+% plot(topleft_t,topleft_tc_bl);
+% xlabel('Time (s)')
+% ylabel('Temperature (°C)')
+% legend("Top-Right TC", "Top-Left TC", "Bottom-Left TC", "Bottom-Right TC")
 
 %% generate the temp vs distance set for each thermocouple
 
@@ -126,7 +126,7 @@ figure
 tiledlayout(2,2,"TileSpacing","compact");
 
 thermocouple_tr_tdset = [
-    bottomleft_dist_from_tcs(1) compute_stats_last_in_last_percent(bottomleft_tc_tr,last_percent) ;
+    % bottomleft_dist_from_tcs(1) compute_stats_last_in_last_percent(bottomleft_tc_tr,last_percent) ;
     bottommiddle_dist_from_tcs(1) compute_stats_last_in_last_percent(bottommiddle_tc_tr,last_percent) ;
     bottomright_dist_from_tcs(1) compute_stats_last_in_last_percent(bottomright_tc_tr,last_percent) ;
     
@@ -134,9 +134,9 @@ thermocouple_tr_tdset = [
     centercenter_dist_from_tcs(1) compute_stats_last_in_last_percent(centercenter_tc_tr,last_percent) ;
     centerright_dist_from_tcs(1) compute_stats_last_in_last_percent(centerright_tc_tr,last_percent) ;
 
-    topleft_dist_from_tcs(1) compute_stats_last_in_last_percent(topleft_tc_tr,last_percent) ;
+    % topleft_dist_from_tcs(1) compute_stats_last_in_last_percent(topleft_tc_tr,last_percent) ;
     topcenter_dist_from_tcs(1) compute_stats_last_in_last_percent(topcenter_tc_tr,last_percent) ;
-    topright_dist_from_tcs(1) compute_stats_last_in_last_percent(topright_tc_tr,last_percent) ;
+    % topright_dist_from_tcs(1) compute_stats_last_in_last_percent(topright_tc_tr,last_percent) ;
 ];
 thermocouple_tr_linear = robustfit(thermocouple_tr_tdset(:,1),thermocouple_tr_tdset(:,2));
 thermocouple_tr_var = mean(thermocouple_tr_tdset(:,3));
@@ -151,7 +151,7 @@ ylabel("Temperature (°C)")
 title("Top-Right")
 
 thermocouple_br_tdset = [
-    bottomleft_dist_from_tcs(2) compute_stats_last_in_last_percent(bottomleft_tc_br,last_percent) ;
+    % bottomleft_dist_from_tcs(2) compute_stats_last_in_last_percent(bottomleft_tc_br,last_percent) ;
     bottommiddle_dist_from_tcs(2) compute_stats_last_in_last_percent(bottommiddle_tc_br,last_percent) ;
     bottomright_dist_from_tcs(2) compute_stats_last_in_last_percent(bottomright_tc_br,last_percent) ;
     
@@ -159,9 +159,9 @@ thermocouple_br_tdset = [
     centercenter_dist_from_tcs(2) compute_stats_last_in_last_percent(centercenter_tc_br,last_percent) ;
     centerright_dist_from_tcs(2) compute_stats_last_in_last_percent(centerright_tc_br,last_percent) ;
 
-    topleft_dist_from_tcs(2) compute_stats_last_in_last_percent(topleft_tc_br,last_percent) ;
+    % topleft_dist_from_tcs(2) compute_stats_last_in_last_percent(topleft_tc_br,last_percent) ;
     topcenter_dist_from_tcs(2) compute_stats_last_in_last_percent(topcenter_tc_br,last_percent) ;
-    topright_dist_from_tcs(2) compute_stats_last_in_last_percent(topright_tc_br,last_percent) ;
+    % topright_dist_from_tcs(2) compute_stats_last_in_last_percent(topright_tc_br,last_percent) ;
 ];
 thermocouple_br_linear = robustfit(thermocouple_br_tdset(:,1),thermocouple_br_tdset(:,2));
 thermocouple_br_var = mean(thermocouple_br_tdset(:,3));
@@ -176,7 +176,7 @@ ylabel("Temperature (°C)")
 title("Bottom-Right")
 
 thermocouple_bl_tdset = [
-    bottomleft_dist_from_tcs(3) compute_stats_last_in_last_percent(bottomleft_tc_bl,last_percent) ;
+    % bottomleft_dist_from_tcs(3) compute_stats_last_in_last_percent(bottomleft_tc_bl,last_percent) ;
     bottommiddle_dist_from_tcs(3) compute_stats_last_in_last_percent(bottommiddle_tc_bl,last_percent) ;
     bottomright_dist_from_tcs(3) compute_stats_last_in_last_percent(bottomright_tc_bl,last_percent) ;
     
@@ -184,9 +184,9 @@ thermocouple_bl_tdset = [
     centercenter_dist_from_tcs(3) compute_stats_last_in_last_percent(centercenter_tc_bl,last_percent) ;
     centerright_dist_from_tcs(3) compute_stats_last_in_last_percent(centerright_tc_bl,last_percent) ;
 
-    topleft_dist_from_tcs(3) compute_stats_last_in_last_percent(topleft_tc_bl,last_percent) ;
+    % topleft_dist_from_tcs(3) compute_stats_last_in_last_percent(topleft_tc_bl,last_percent) ;
     topcenter_dist_from_tcs(3) compute_stats_last_in_last_percent(topcenter_tc_bl,last_percent) ;
-    topright_dist_from_tcs(3) compute_stats_last_in_last_percent(topright_tc_bl,last_percent) ;
+    % topright_dist_from_tcs(3) compute_stats_last_in_last_percent(topright_tc_bl,last_percent) ;
 ];
 thermocouple_bl_linear = robustfit(thermocouple_bl_tdset(:,1),thermocouple_bl_tdset(:,2));
 thermocouple_bl_var = mean(thermocouple_bl_tdset(:,3));
@@ -201,7 +201,7 @@ ylabel("Temperature (°C)")
 title("Bottom-Left")
 
 thermocouple_tl_tdset = [
-    bottomleft_dist_from_tcs(4) compute_stats_last_in_last_percent(bottomleft_tc_tl,last_percent) ;
+    % bottomleft_dist_from_tcs(4) compute_stats_last_in_last_percent(bottomleft_tc_tl,last_percent) ;
     bottommiddle_dist_from_tcs(4) compute_stats_last_in_last_percent(bottommiddle_tc_tl,last_percent) ;
     bottomright_dist_from_tcs(4) compute_stats_last_in_last_percent(bottomright_tc_tl,last_percent) ;
     
@@ -209,9 +209,9 @@ thermocouple_tl_tdset = [
     centercenter_dist_from_tcs(4) compute_stats_last_in_last_percent(centercenter_tc_tl,last_percent) ;
     centerright_dist_from_tcs(4) compute_stats_last_in_last_percent(centerright_tc_tl,last_percent) ;
 
-    topleft_dist_from_tcs(4) compute_stats_last_in_last_percent(topleft_tc_tl,last_percent) ;
+    % topleft_dist_from_tcs(4) compute_stats_last_in_last_percent(topleft_tc_tl,last_percent) ;
     topcenter_dist_from_tcs(4) compute_stats_last_in_last_percent(topcenter_tc_tl,last_percent) ;
-    topright_dist_from_tcs(4) compute_stats_last_in_last_percent(topright_tc_tl,last_percent) ;
+    % topright_dist_from_tcs(4) compute_stats_last_in_last_percent(topright_tc_tl,last_percent) ;
 ];
 thermocouple_tl_linear = robustfit(thermocouple_tl_tdset(:,1),thermocouple_tl_tdset(:,2));
 thermocouple_tl_var = mean(thermocouple_tl_tdset(:,3));
@@ -273,11 +273,11 @@ X = [XX(:) YY(:)];
 actual_loc_z = 1;
 actual_loc_size = 2;
 
-% validation 1
+%% validation 1
 
 [valid1_t,valid1_ir_lsr,valid1_ir_lsl,valid1_ir_tsr,valid1_ir_tsl, ...
-    valid1_tc_tr,valid1_tc_br,valid1_tc_bl,valid1_tc_tl] = load_data("validation_data/test_random1_ss.mat");
-valid1_pos = [datum_x_from_rng(42.8) datum_y_from_rng(18.2)]';
+    valid1_tc_tr,valid1_tc_br,valid1_tc_bl,valid1_tc_tl] = load_data("training_data/train_tr_ss.mat");
+valid1_pos = [datum_x_from_rng(43.5) datum_y_from_rng(16.3)]';
 
 valid1_tc_tl_ss = compute_stats_last_in_last_percent(valid1_tc_tl,last_percent);
 valid1_tc_tl_ss = valid1_tc_tl_ss(1);
@@ -304,11 +304,11 @@ ylabel('$y$', 'Interpreter', 'latex')
 zlabel('$P(\mathbf{\mu}|\mathbf{x})$', 'Interpreter', "latex")
 legend('Likelihood', 'Actual Location', 'Location', 'best')
 
-% validation 2
+%% validation 2
 
 [valid2_t,valid2_ir_lsr,valid2_ir_lsl,valid2_ir_tsr,valid2_ir_tsl, ...
-    valid2_tc_tr,valid2_tc_br,valid2_tc_bl,valid2_tc_tl] = load_data("validation_data/test_random2_ss.mat");
-valid2_pos = [datum_x_from_rng(41.4) datum_y_from_rng(21.3)]';
+    valid2_tc_tr,valid2_tc_br,valid2_tc_bl,valid2_tc_tl] = load_data("training_data/train_tl_ss.mat");
+valid2_pos = [datum_x_from_rng(37.2) datum_y_from_rng(16.7)]';
 
 valid2_tc_tl_ss = compute_stats_last_in_last_percent(valid2_tc_tl,last_percent);
 valid2_tc_tl_ss = valid2_tc_tl_ss(1);
@@ -335,11 +335,11 @@ ylabel('$y$', 'Interpreter', 'latex')
 zlabel('$P(\mathbf{\mu}|\mathbf{x})$', 'Interpreter', "latex")
 legend('Likelihood', 'Actual Location', 'Location', 'best')
 
-% validation 3
+%% validation 3
 
 [valid3_t,valid3_ir_lsr,valid3_ir_lsl,valid3_ir_tsr,valid3_ir_tsl, ...
-    valid3_tc_tr,valid3_tc_br,valid3_tc_bl,valid3_tc_tl] = load_data("validation_data/test_random3_ss.mat");
-valid3_pos = [datum_x_from_rng(36.6) datum_y_from_rng(19.7)]';
+    valid3_tc_tr,valid3_tc_br,valid3_tc_bl,valid3_tc_tl] = load_data("training_data/train_bl_2_ss.mat");
+valid3_pos = [datum_x_from_rng(37.5) datum_y_from_rng(22.5)]';
 
 valid3_tc_tl_ss = compute_stats_last_in_last_percent(valid3_tc_tl,last_percent);
 valid3_tc_tl_ss = valid3_tc_tl_ss(1);
